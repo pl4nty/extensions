@@ -59,8 +59,10 @@ jobs:
           username: ${{ github.repository_owner }}
       - name: Push to registry
         if: github.event_name != 'pull_request'
+        env:
+          USERNAME: ${{ github.repository_owner }}
         run: |
-          make  PUSH=true 
+          make  PUSH=true
       - name: Retrieve PR labels
         id: retrieve-pr-labels
         uses: actions/github-script@v7
@@ -80,6 +82,7 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           PUSH: "true"
+          USERNAME: ${{ github.repository_owner }}
         run: |
           curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.18.0/go-containerregistry_Linux_x86_64.tar.gz" > go-containerregistry.tar.gz
           tar -zxvf go-containerregistry.tar.gz -C /usr/local/bin/ crane
