@@ -45,6 +45,8 @@ jobs:
           # need history for `git describe` to work for Talos `Makefile`
           fetch-depth: 0
           fetch-tags: true
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build
@@ -61,8 +63,9 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           USERNAME: ${{ github.repository_owner }}
+          PLATFORM: linux/arm64,linux/amd64
         run: |
-          make  PUSH=true
+          make  PUSH=true 
       - name: Retrieve PR labels
         id: retrieve-pr-labels
         uses: actions/github-script@v7
